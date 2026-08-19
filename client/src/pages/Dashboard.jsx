@@ -54,9 +54,7 @@ export default function Dashboard() {
     const handleSave = async (form, id) => {
         if (id) {
             const res = await api.put(`/items/${id}`, form);
-            setItems((prev) =>
-                prev.map((it) => (it._id === id ? res.data.item : it)),
-            );
+            setItems((prev) => prev.map((it) => (it._id === id ? res.data.item : it)));
             setSelected(res.data.item);
         } else {
             const res = await api.post("/items", form);
@@ -78,47 +76,18 @@ export default function Dashboard() {
     return (
         <Layout>
             <div className="mb-6">
-                <h1 className="text-xl font-semibold text-gray-800">
-                    Dashboard Item
-                </h1>
-                <p className="text-sm text-gray-500">
-                    Kelola data item Anda — pilih dari daftar untuk melihat
-                    detail.
-                </p>
+                <h1 className="text-xl font-semibold text-gray-800">Dashboard Item</h1>
+                <p className="text-sm text-gray-500">Kelola data item Anda — pilih dari daftar untuk melihat detail.</p>
             </div>
 
-            {error && (
-                <div className="mb-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-600">
-                    {error}
-                </div>
-            )}
+            {error && <div className="mb-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-600">{error}</div>}
 
-            <div
-                className="grid grid-cols-1 gap-6 md:grid-cols-[360px_1fr]"
-                style={{ minHeight: "60vh" }}
-            >
-                <ItemList
-                    items={items}
-                    selectedId={selectedId}
-                    onSelect={handleSelect}
-                    onNew={handleNew}
-                    search={search}
-                    onSearch={setSearch}
-                />
-                <ItemDetail
-                    item={selected}
-                    isNew={isNew}
-                    onSave={handleSave}
-                    onDelete={handleDelete}
-                    onCancel={handleCancel}
-                />
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-[360px_1fr]" style={{ minHeight: "60vh" }}>
+                <ItemList items={items} selectedId={selectedId} onSelect={handleSelect} onNew={handleNew} search={search} onSearch={setSearch} />
+                <ItemDetail item={selected} isNew={isNew} onSave={handleSave} onDelete={handleDelete} onCancel={handleCancel} />
             </div>
 
-            {loading && (
-                <p className="mt-4 text-center text-sm text-gray-400">
-                    Memuat data...
-                </p>
-            )}
+            {loading && <p className="mt-4 text-center text-sm text-gray-400">Memuat data...</p>}
         </Layout>
     );
 }

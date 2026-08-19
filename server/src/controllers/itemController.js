@@ -4,9 +4,7 @@ const Item = require("../models/Item");
 const getItems = async (req, res) => {
     try {
         const { search } = req.query;
-        const filter = search
-            ? { name: { $regex: search, $options: "i" } }
-            : {};
+        const filter = search ? { name: { $regex: search, $options: "i" } } : {};
 
         const items = await Item.find(filter).sort({ createdAt: -1 });
         res.json({ items, total: items.length });
@@ -22,8 +20,7 @@ const getItems = async (req, res) => {
 const getItemById = async (req, res) => {
     try {
         const item = await Item.findById(req.params.id);
-        if (!item)
-            return res.status(404).json({ message: "Item tidak ditemukan" });
+        if (!item) return res.status(404).json({ message: "Item tidak ditemukan" });
         res.json({ item });
     } catch (err) {
         res.status(500).json({
@@ -37,8 +34,7 @@ const getItemById = async (req, res) => {
 const createItem = async (req, res) => {
     try {
         const { name, description, category, price, stock, status } = req.body;
-        if (!name)
-            return res.status(400).json({ message: "Nama item wajib diisi" });
+        if (!name) return res.status(400).json({ message: "Nama item wajib diisi" });
 
         const item = await Item.create({
             name,
@@ -66,8 +62,7 @@ const updateItem = async (req, res) => {
             new: true,
             runValidators: true,
         });
-        if (!item)
-            return res.status(404).json({ message: "Item tidak ditemukan" });
+        if (!item) return res.status(404).json({ message: "Item tidak ditemukan" });
         res.json({ item });
     } catch (err) {
         res.status(500).json({
@@ -81,8 +76,7 @@ const updateItem = async (req, res) => {
 const deleteItem = async (req, res) => {
     try {
         const item = await Item.findByIdAndDelete(req.params.id);
-        if (!item)
-            return res.status(404).json({ message: "Item tidak ditemukan" });
+        if (!item) return res.status(404).json({ message: "Item tidak ditemukan" });
         res.json({ message: "Item berhasil dihapus" });
     } catch (err) {
         res.status(500).json({

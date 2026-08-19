@@ -12,9 +12,7 @@ const register = async (req, res) => {
         const { name, email, password } = req.body;
 
         if (!name || !email || !password) {
-            return res
-                .status(400)
-                .json({ message: "Nama, email, dan password wajib diisi" });
+            return res.status(400).json({ message: "Nama, email, dan password wajib diisi" });
         }
 
         const existing = await User.findOne({ email });
@@ -47,16 +45,12 @@ const login = async (req, res) => {
     try {
         const { email, password } = req.body;
         if (!email || !password) {
-            return res
-                .status(400)
-                .json({ message: "Email dan password wajib diisi" });
+            return res.status(400).json({ message: "Email dan password wajib diisi" });
         }
 
         const user = await User.findOne({ email }).select("+password");
         if (!user || !(await user.comparePassword(password))) {
-            return res
-                .status(401)
-                .json({ message: "Email atau password salah" });
+            return res.status(401).json({ message: "Email atau password salah" });
         }
 
         const token = signToken(user._id);
