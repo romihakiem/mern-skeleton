@@ -55,18 +55,41 @@ Frontend berjalan di `http://localhost:5173`.
 
 ## Endpoint API
 
-| Method | Endpoint           | Keterangan                     | Auth |
-| ------ | ------------------ | ------------------------------ | ---- |
-| POST   | /api/auth/register | Registrasi user baru           | -    |
-| POST   | /api/auth/login    | Login, mengembalikan token JWT | -    |
-| GET    | /api/auth/me       | Data user yang sedang login    | ✅   |
-| GET    | /api/items         | Daftar item (bisa `?search=`)  | ✅   |
-| GET    | /api/items/:id     | Detail satu item               | ✅   |
-| POST   | /api/items         | Buat item baru                 | ✅   |
-| PUT    | /api/items/:id     | Update item                    | ✅   |
-| DELETE | /api/items/:id     | Hapus item                     | ✅   |
+| Method | Endpoint           | Keterangan                                    | Auth |
+| ------ | ------------------ | --------------------------------------------- | ---- |
+| POST   | /api/auth/register | Registrasi user baru                          | -    |
+| POST   | /api/auth/login    | Login, mengembalikan token JWT                | -    |
+| GET    | /api/auth/me       | Data user yang sedang login                   | ✅   |
+| GET    | /api/items         | Daftar item (`?search=`, `?page=`, `?limit=`) | ✅   |
+| GET    | /api/items/:id     | Detail satu item                              | ✅   |
+| POST   | /api/items         | Buat item baru                                | ✅   |
+| PUT    | /api/items/:id     | Update item                                   | ✅   |
+| DELETE | /api/items/:id     | Hapus item                                    | ✅   |
 
 Semua endpoint ber-`✅` butuh header `Authorization: Bearer <token>`.
+
+## Pagination
+
+`GET /api/items` mendukung pagination lewat query param:
+
+- `page` — nomor halaman (default `1`)
+- `limit` — jumlah item per halaman (default `10`, maksimal `100`)
+
+Response-nya menyertakan metadata:
+
+```json
+{
+  "items": [...],
+  "total": 42,
+  "page": 1,
+  "limit": 10,
+  "totalPages": 5,
+  "hasPrevPage": false,
+  "hasNextPage": true
+}
+```
+
+Di frontend, `Dashboard.jsx` menyimpan state `page` dan mengirim `page`/`limit` setiap fetch. Komponen `Pagination.jsx` menampilkan tombol "Sebelumnya"/"Berikutnya" di bawah daftar item (`ItemList.jsx`), otomatis disembunyikan bila hanya ada 1 halaman. Pencarian (`search`) otomatis mereset ke halaman 1.
 
 ## Cara mengembangkan lebih lanjut
 

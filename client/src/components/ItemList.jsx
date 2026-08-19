@@ -1,4 +1,6 @@
-export default function ItemList({ items, selectedId, onSelect, onNew, search, onSearch }) {
+import Pagination from "./Pagination";
+
+export default function ItemList({ items, selectedId, onSelect, onNew, search, onSearch, pagination, onPageChange }) {
     return (
         <div className="flex h-full flex-col rounded-lg border border-gray-200 bg-white">
             <div className="border-b border-gray-200 p-4">
@@ -34,6 +36,8 @@ export default function ItemList({ items, selectedId, onSelect, onNew, search, o
                     </li>
                 ))}
             </ul>
+
+            {pagination && <Pagination page={pagination.page} totalPages={pagination.totalPages} hasPrevPage={pagination.hasPrevPage} hasNextPage={pagination.hasNextPage} onPageChange={onPageChange} />}
         </div>
     );
 }
